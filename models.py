@@ -31,7 +31,7 @@ class RNNGCN(nn.Module):
         one_out=self.gc1(x[:,-1,:],now_adj)
         one_out=F.relu(one_out)
 
-        one_out = F.dropout(one_out, self.dropout)
+        one_out = F.dropout(one_out, self.dropout, training=self.training)
         one_out = self.gc2(one_out,now_adj)
 
         return F.log_softmax(one_out, dim=1)
@@ -74,7 +74,7 @@ class TRNNGCN(nn.Module):
         del decay_adj
         one_out=F.relu(self.gc1(x[:,-1,:],now_adj))
 
-        one_out = F.dropout(one_out, self.dropout)
+        one_out = F.dropout(one_out, self.dropout, training=self.training)
         one_out = self.gc2(one_out,now_adj)
         output=F.log_softmax(one_out, dim=1)
         y=torch.argmax(output,dim=1)
@@ -106,7 +106,7 @@ class LSTMGCN(nn.Module):
     def forward(self, x, adj):
         adj=self.LS_begin(adj)
         x = F.relu(self.gc1(x[:,-1,:], adj[0][:,-1,:]))
-        x = F.dropout(x, self.dropout)
+        x = F.dropout(x, self.dropout, training=self.training)
         x = self.gc2(x, adj[0][:,-1,:])
 
         return F.log_softmax(x, dim=1)
@@ -130,7 +130,7 @@ class GCNLSTM(nn.Module):
         out=[]
         for i in range(adj.shape[1]):
             one_out=F.relu(self.gc1(x[:,i,:],adj[:,i,:]))
-            one_out = F.dropout(one_out, self.dropout)
+            one_out = F.dropout(one_out, self.dropout, training=self.training)
             one_out = self.gc2(one_out, adj[:,i,:])
             out+=[one_out]
         out = torch.stack(out, 1)   
@@ -160,7 +160,7 @@ class GCN(nn.Module):
         
 
         x = F.relu(self.gc1(x, adj))
-        x = F.dropout(x, self.dropout)
+        x = F.dropout(x, self.dropout, training=self.training)
         x = self.gc2(x, adj)
 
         
@@ -184,7 +184,7 @@ class GAT(nn.Module):
         
         x = F.relu(self.conv1(adj, x))  #different from self-defined gcn
         x=x.reshape(x.shape[0],x.shape[2])
-        x = F.dropout(x, self.dropout)
+        x = F.dropout(x, self.dropout, training=self.training)
         x = self.conv2(adj, x)
         x=x.reshape(x.shape[0],x.shape[2])
         
@@ -204,7 +204,7 @@ class GraphSage(nn.Module):
         # is the same as the out_degree.
         # Perform graph convolution and activation function.
         x = F.relu(self.conv1(adj, x))  #different from self-defined gcn
-        x = F.dropout(x, self.dropout)
+        x = F.dropout(x, self.dropout, training=self.training)
         x = self.conv2(adj, x)
         
         return F.log_softmax(x, dim=1)
@@ -399,4 +399,5 @@ class TopK(torch.nn.Module):
 
         #we need to transpose the output
         return out.t()
+
 
