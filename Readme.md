@@ -1,7 +1,7 @@
 Interpretable Clustering
 =====
 
-This repository contains the code for [Interpretable Clustering on Dynamic Graphs with Recurrent Graph Neural Networks].
+This repository contains the code for [Interpretable Clustering on Dynamic Graphs with Recurrent Graph Neural Networks](https://arxiv.org/abs/2012.08740), AAAI 2021.
 
 ## Data
 
