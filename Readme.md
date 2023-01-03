@@ -5,13 +5,18 @@ This repository contains the code for [Interpretable Clustering on Dynamic Graph
 
 ## Data
 
-5 datasets were used in the paper:
+6 datasets were used in the paper:
 
+- Simulate
 - DBLP-E
 - DBLP-3
 - DBLP-5
 - Brain
 - Reddit
+
+Update:
+Simulate and DBLP-E datasets work well.
+DBLP-3, DBLP-5, Brain, and Reddit datasets are from another paper and hard to verify the meaning of node features. Will replace it to new datasets soon.
 
 ## Requirements
   * Python 3,
